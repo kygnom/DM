@@ -1,23 +1,17 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const oncooldown = new Set();
-
+const messageArray = message.content.split(" ");
+const command = messageArray[0];
+const com = command.toLowerCase();
+const args = message.content.slice(prefix.length).split(" ");
 const prefix = "-"
-
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag} :)`);
     bot.user.setActivity('-dm');
 });
-
 bot.on('message', message => {
-
-    let messageArray = message.content.split(" ");
-    let command = messageArray[0];
-    let com = command.toLowerCase();
-    let args = message.content.slice(prefix.length).split(" ");
-
-    if (message.author.bot || message.channel.type === "dm"){return}
-
+    if (message.author.bot || message.channel.type === "dm") { return }
     if (com === `${prefix}dm`) {
         /* Permissions list: {
       ADMINISTRATOR: true,
@@ -51,15 +45,12 @@ bot.on('message', message => {
       MANAGE_ROLES: true,
       MANAGE_WEBHOOKS: true,
       MANAGE_EMOJIS: true
-    }
-    */
+    }*/
         if (!message.member.permissions.has("MANAGE_MESSAGES"))
             return message.channel.send(`You don't have permission to use this command.`);
-
         // checks if the user in the "oncooldown" set, returns if
         if (oncooldown.has(message.author.id)) {
             return message.reply("Wait 30 seconds before using this command again.");
-
         } else {
             let user =
                 message.mentions.members.first() ||
@@ -74,7 +65,7 @@ bot.on('message', message => {
                 .send(args.slice(1).join(" "))
                 .catch(() => message.channel.send("That user could not be DMed!"))
                 .then(() => message.channel.send(`Sent a message to ${user.user.tag}`));
-                // Adds the user to the set 
+            // Adds the user to the set 
             oncooldown.add(message.author.id);
             setTimeout(() => {
                 // Removes the user from the set after 30 seconds
