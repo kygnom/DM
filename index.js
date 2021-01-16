@@ -1,16 +1,19 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const oncooldown = new Set();
-const messageArray = message.content.split(" ");
-const command = messageArray[0];
-const com = command.toLowerCase();
-const args = message.content.slice(prefix.length).split(" ");
+
 const prefix = "-"
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag} :)`);
     bot.user.setActivity('-dm');
 });
 bot.on('message', message => {
+
+    const messageArray = message.content.split(" ");
+    const command = messageArray[0];
+    const com = command.toLowerCase();
+    const args = message.content.slice(prefix.length).split(" ");
+
     if (message.author.bot || message.channel.type === "dm") { return }
     if (com === `${prefix}dm`) {
         /* Permissions list: {
@@ -46,6 +49,7 @@ bot.on('message', message => {
       MANAGE_WEBHOOKS: true,
       MANAGE_EMOJIS: true
     }*/
+
         if (!message.member.permissions.has("MANAGE_MESSAGES"))
             return message.channel.send(`You don't have permission to use this command.`);
         // checks if the user in the "oncooldown" set, returns if
@@ -75,4 +79,4 @@ bot.on('message', message => {
     }
 })
 
-bot.login('TOKEN');
+bot.login('Nzk5MDI3ODI5NjcyNzcxNjM0.X_9mpw.XhxD7uILUEEI6r50L6ljuWdpq7M');
